@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Tiket Wisata</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Checkout Tiket Wisata</h1>
+        
+        <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+            <form id="checkoutForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Pilih Lokasi Wisata</label>
+                    <select id="lokasiWisata" class="w-full px-3 py-2 border rounded-lg" required>
+                        <option value="">Pilih Lokasi</option>
+                        <option value="gedong_songo">Gedong Songo</option>
+                        <option value="umbul_sido_mukti">Umbul Sido Mukti</option>
+                        <option value="celosia">Celosia</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Jumlah Tiket</label>
+                    <input type="number" id="jumlahTiket" min="1" max="10" 
+                           class="w-full px-3 py-2 border rounded-lg" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Tanggal Kunjungan</label>
+                    <input type="date" id="tanggalKunjungan" 
+                           class="w-full px-3 py-2 border rounded-lg" required>
+                </div>
+
+                <div id="hargaTiket" class="mb-4 text-center font-bold">
+                    Harga Tiket: Rp 0
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Nama Pemesan</label>
+                    <input type="text" id="namaPemesan" 
+                           class="w-full px-3 py-2 border rounded-lg" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Email</label>
+                    <input type="email" id="emailPemesan" 
+                           class="w-full px-3 py-2 border rounded-lg" required>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                    Checkout
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const hargaTiket = {
+            'gedong_songo': 25000,
+            'umbul_sido_mukti': 15000,
+            'celosia': 20000
+        };
+
+        const lokasiSelect = document.getElementById('lokasiWisata');
+        const jumlahTiketInput = document.getElementById('jumlahTiket');
+        const hargaTiketDiv = document.getElementById('hargaTiket');
+        const checkoutForm = document.getElementById('checkoutForm');
+
+        function updateHarga() {
+            const lokasi = lokasiSelect.value;
+            const jumlah = jumlahTiketInput.value;
+            const harga = hargaTiket[lokasi] || 0;
+            const totalHarga = harga * jumlah;
+
+            hargaTiketDiv.textContent = `Harga Tiket: Rp ${totalHarga.toLocaleString()}`;
+        }
+
+        lokasiSelect.addEventListener('change', updateHarga);
+        jumlahTiketInput.addEventListener('input', updateHarga);
+
+        checkoutForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const lokasi = lokasiSelect.value;
+            const jumlah = jumlahTiketInput.value;
+            const tanggal = document.getElementById('tanggalKunjungan').value;
+            const nama = document.getElementById('namaPemesan').value;
+            const email = document.getElementById('emailPemesan').value;
+            const totalHarga = hargaTiket[lokasi] * jumlah;
+
+            alert(`Pemesanan Berhasil!\n
+Lokasi: ${lokasiSelect.options[lokasiSelect.selectedIndex].text}
+Jumlah Tiket: ${jumlah}
+Tanggal: ${tanggal}
+Total Harga: Rp ${totalHarga.toLocaleString()}
+Nama: ${nama}
+Email: ${email}`);
+        });
+    </script>
+</body>
+</html>
